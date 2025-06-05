@@ -1,0 +1,13 @@
+CREATE DATABASE studio_db;
+
+Use studio_db;
+
+
+CREATE TABLE task (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    start DATETIME NOT NULL,
+    end DATETIME NOT NULL,
+    description TEXT,
+    location VARCHAR(255)
+);
