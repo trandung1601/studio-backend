@@ -1,11 +1,12 @@
 import express from "express";
 
-import { getTasks } from "../controllers/task.controller";
+import { getTasks, getTasksToday } from "../controllers/task.controller";
 
 const router = express.Router();
 
 
 // Task routes
-router.get("/hello", getTasks);
+router.get("", getTasks);
+router.get("/today", getTasksToday);
 
 export default router;

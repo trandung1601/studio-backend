@@ -1,11 +1,12 @@
-import express from "express";
 import dotenv from "dotenv";
+import express from "express";
+
 import taskRoutes from "./routes/task.routes";
 
 dotenv.config();
 
 const app = express();
 
-app.use("/api/sample", taskRoutes);
+app.use("/api/tasks", taskRoutes);
 
 export default app;
