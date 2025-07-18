@@ -6,6 +6,7 @@ import taskRoutes from "./routes/task.routes";
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 
 app.use("/api/tasks", taskRoutes);
 

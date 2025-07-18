@@ -1,17 +1,18 @@
 import { format } from "date-fns";
 
-import { getAllTasks, getTasksToday } from "../repositories/task.repository";
+import { getAllTasks, getTasksToday, insertTask } from "../repositories/task.repository";
 
 export interface Task {
     id: number;
     title: string;
-    start: string; // ISO date string
-    end: string;
+    startTime: string;
+    endTime: string;
     description: string;
     location: string;
+    created_at: Date;
 }
 export interface AgendaSection {
-    title: string; // 'YYYY-MM-DD'
+    title: string;
     data: AgendaItem[];
 }
 
@@ -29,11 +30,14 @@ export async function getTasks(): Promise<AgendaSection[]> {
     try {
         const tasks = await getAllTasks();
 
+
         const grouped: { [date: string]: AgendaItem[] } = {};
 
         tasks.forEach((task) => {
-            const dateKey = format(new Date(task.start), "yyyy-MM-dd");
-            const hour = format(new Date(task.start), "haaa").toLowerCase(); // e.g. "11pm"
+            console.log("Fetched forEach:", task);
+
+            const dateKey = format(new Date(task.startTime), "yyyy-MM-dd");
+            const hour = format(new Date(task.startTime), "haaa").toLowerCase(); // e.g. "11pm"
 
             if (!grouped[dateKey]) {
                 grouped[dateKey] = [];
@@ -44,7 +48,6 @@ export async function getTasks(): Promise<AgendaSection[]> {
                 title: task.title,
                 hour,
                 duration: "1h", // you can calculate this from start/end if needed
-                itemCustomHeightType: "LongEvent", // customize based on rules
                 location: task.location,
             });
         });
@@ -54,7 +57,6 @@ export async function getTasks(): Promise<AgendaSection[]> {
             data: grouped[date],
         }));
 
-        console.log("Transformed Agenda Sections:", sections);
         return sections;
     } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -68,6 +70,21 @@ export async function getTasksForToday() {
         return tasksToday;
     } catch (error) {
         console.error("Error fetching tasks:", error);
+        throw error;
+    }
+}
+
+export async function createTask(taskData: Omit<Task, 'id'>): Promise<Task> {
+    try {
+        console.log('createTask SERVICE: ', taskData)
+        const insertId = await insertTask(taskData);
+        return {
+            id: insertId,
+            ...taskData,
+            created_at: new Date(),
+        };
+    } catch (error) {
+        console.error("Error creating task:", error);
         throw error;
     }
 }
