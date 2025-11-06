@@ -41,5 +41,5 @@ export async function insertTask(task: TaskInsert): Promise<number> {
         [title, location, description, toMySQLDateTime(startTime), toMySQLDateTime(endTime)]
     );
 
-    return result.insertId; // trả về ID của task mới thêm
+    return result.insertId;
 }
