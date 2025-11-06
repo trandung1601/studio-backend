@@ -29,7 +29,7 @@ export interface AgendaItem {
 export async function getTasks(): Promise<AgendaSection[]> {
     try {
         const tasks = await getAllTasks();
-
+        console.log("Fetched getTasks:",);
 
         const grouped: { [date: string]: AgendaItem[] } = {};
 
@@ -66,6 +66,8 @@ export async function getTasks(): Promise<AgendaSection[]> {
 
 export async function getTasksForToday() {
     try {
+
+        console.error("getTasksForToday");
         const tasksToday = await getTasksToday();
         return tasksToday;
     } catch (error) {

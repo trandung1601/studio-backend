@@ -14,6 +14,7 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
 
 export const getTasksToday = async (req: Request, res: Response): Promise<void> => {
     try {
+        console.log('getTasksToday')
         const tasks = await taskService.getTasksForToday();
         res.status(200).json(tasks);
     } catch (error) {
